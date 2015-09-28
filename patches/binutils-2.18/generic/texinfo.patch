@@ -1,0 +1,189 @@
+ From: Stephan Linz <linz@li-pro.net>
+Bug-Debian: http://bugs.debian.org/704586
+Description: Fix FTBFS with texinfo 5
+ This patch combines changes from the following commits from the
+ upstream git repository: baf8679, 935f854, f0fa19a and 2cfdb6d, by
+ Nick Clifton and Andreas Schwab. 
+
+Upstream-Status: Backport  
+
+Index: binutils-2.18/bfd/doc/bfd.texinfo
+===================================================================
+--- binutils-2.18.orig/bfd/doc/bfd.texinfo	2015-08-19 09:55:30.283424927 -0600
++++ binutils-2.18/bfd/doc/bfd.texinfo	2015-08-19 09:55:30.271424927 -0600
+@@ -323,7 +323,7 @@
+ @printindex cp
+ 
+ @tex
+-% I think something like @colophon should be in texinfo.  In the
++% I think something like @@colophon should be in texinfo.  In the
+ % meantime:
+ \long\def\colophon{\hbox to0pt{}\vfill
+ \centerline{The body of this manual is set in}
+@@ -334,7 +334,7 @@
+ \centerlineTemplate:\sl\fontname\tensl\/
+ \centerline{are used for emphasis.}\vfill}
+ \page\colophon
+-% Blame: doc@cygnus.com, 28mar91.
++% Blame: doc@@cygnus.com, 28mar91.
+ @end tex
+ 
+ @bye
+Index: binutils-2.18/gas/doc/c-arc.texi
+===================================================================
+--- binutils-2.18.orig/gas/doc/c-arc.texi	2015-08-19 09:55:30.283424927 -0600
++++ binutils-2.18/gas/doc/c-arc.texi	2015-08-19 09:55:30.271424927 -0600
+@@ -212,7 +212,7 @@
+ encodings for use of these instructions according to the specification
+ by the user.  The parameters are:
+ 
+-@table @bullet
++@itemize @bullet
+ @item @var{name}
+ Name of the extension instruction 
+ 
+@@ -271,7 +271,7 @@
+ with SYNTAX_20P.
+ 
+ @end itemize 
+-@end table
++@end itemize
+ 
+ For example, defining 64-bit multiplier with immediate operands:
+ 
+Index: binutils-2.18/gas/doc/c-arm.texi
+===================================================================
+--- binutils-2.18.orig/gas/doc/c-arm.texi	2015-08-19 09:55:30.283424927 -0600
++++ binutils-2.18/gas/doc/c-arm.texi	2015-08-19 09:55:30.275424927 -0600
+@@ -317,13 +317,6 @@
+ @cindex register names, ARM
+ *TODO* Explain about ARM register naming, and the predefined names.
+ 
+-@node ARM Floating Point
+-@section Floating Point
+-
+-@cindex floating point, ARM (@sc{ieee})
+-@cindex ARM floating point (@sc{ieee})
+-The ARM family uses @sc{ieee} floating-point numbers.
+-
+ @node ARM-Relocations
+ @subsection ARM relocation generation
+ 
+@@ -365,6 +358,13 @@
+         MOVT r0, #:upper16:foo
+ @end smallexample
+ 
++@node ARM Floating Point
++@section Floating Point
++
++@cindex floating point, ARM (@sc{ieee})
++@cindex ARM floating point (@sc{ieee})
++The ARM family uses @sc{ieee} floating-point numbers.
++
+ @node ARM Directives
+ @section ARM Machine Directives
+ 
+Index: binutils-2.18/gas/doc/c-mips.texi
+===================================================================
+--- binutils-2.18.orig/gas/doc/c-mips.texi	2015-08-19 09:55:30.283424927 -0600
++++ binutils-2.18/gas/doc/c-mips.texi	2015-08-19 09:55:30.275424927 -0600
+@@ -196,7 +196,7 @@
+ instructions around accesses to the @samp{HI} and @samp{LO} registers.
+ @samp{-no-m4650} turns off this option.
+ 
+-@itemx -m3900
++@item -m3900
+ @itemx -no-m3900
+ @itemx -m4100
+ @itemx -no-m4100
+Index: binutils-2.18/gas/doc/c-tic54x.texi
+===================================================================
+--- binutils-2.18.orig/gas/doc/c-tic54x.texi	2015-08-19 09:55:30.283424927 -0600
++++ binutils-2.18/gas/doc/c-tic54x.texi	2015-08-19 09:55:30.275424927 -0600
+@@ -108,7 +108,7 @@
+ is replaced with x.  At this point, x has already been encountered
+ and the substitution stops.
+ 
+-@smallexample @code
++@smallexample
+  .asg   "x",SYM1 
+  .asg   "SYM1",SYM2
+  .asg   "SYM2",x
+@@ -125,14 +125,14 @@
+ ambiguous by placing colons on either side of the subsym.  The following
+ code: 
+ 
+-@smallexample @code
++@smallexample
+  .eval  "10",x
+ LAB:X:  add     #x, a
+ @end smallexample
+ 
+ When assembled becomes:
+ 
+-@smallexample @code
++@smallexample
+ LAB10  add     #10, a
+ @end smallexample
+ 
+@@ -308,7 +308,7 @@
+ of a label or address.  For example, if an address @code{_label} resides
+ in extended program memory, the value of @code{_label} may be loaded as
+ follows:
+-@smallexample @code
++@smallexample
+  ldx     #_label,16,a    ; loads extended bits of _label
+  or      #_label,a       ; loads lower 16 bits of _label
+  bacc    a               ; full address is in accumulator A
+@@ -344,7 +344,7 @@
+ performed on @var{string} before assignment.
+ 
+ @cindex @code{eval} directive, TIC54X
+-@itemx .eval @var{string}, @var{name}
++@item .eval @var{string}, @var{name}
+ Evaluate the contents of string @var{string} and assign the result as a
+ string to the subsym @var{name}.  String replacement is performed on
+ @var{string} before assignment. 
+Index: binutils-2.18/ld/ld.texinfo
+===================================================================
+--- binutils-2.18.orig/ld/ld.texinfo	2015-08-19 09:55:30.283424927 -0600
++++ binutils-2.18/ld/ld.texinfo	2015-08-19 10:00:59.431422498 -0600
+@@ -1729,6 +1729,7 @@
+ 
+ @kindex --version-script=@var{version-scriptfile}
+ @cindex version script, symbol versions
++@item --version-script=@var{version-scriptfile}
+ @itemx --version-script=@var{version-scriptfile}
+ Specify the name of a version script to the linker.  This is typically
+ used when creating shared libraries to specify additional information
+@@ -6919,7 +6920,7 @@
+ @printindex cp
+ 
+ @tex
+-% I think something like @colophon should be in texinfo.  In the
++% I think something like @@colophon should be in texinfo.  In the
+ % meantime:
+ \long\def\colophon{\hbox to0pt{}\vfill
+ \centerline{The body of this manual is set in}
+@@ -6930,7 +6931,7 @@
+ \centerlineTemplate:\sl\fontname\tensl\/
+ \centerline{are used for emphasis.}\vfill}
+ \page\colophon
+-% Blame: doc@cygnus.com, 28mar91.
++% Blame: doc@@cygnus.com, 28mar91.
+ @end tex
+ 
+ @bye
+Index: binutils-2.18/bfd/doc/elf.texi
+===================================================================
+--- binutils-2.18.orig/bfd/doc/elf.texi	2015-08-19 09:55:30.283424927 -0600
++++ binutils-2.18/bfd/doc/elf.texi	2015-08-19 09:55:30.279424927 -0600
+@@ -8,7 +8,7 @@
+ haven't bothered yet.
+ 
+ @findex bfd_elf_find_section
+-@subsubsection @code{bfd_elf_find_section}
++@subsection @code{bfd_elf_find_section}
+ @strong{Synopsis}
+ @example
+ struct elf_internal_shdr *bfd_elf_find_section (bfd *abfd, char *name);
